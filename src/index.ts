@@ -6,18 +6,6 @@ import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { CustomShader } from './CustomShader';
 
-var getUserMedia = (function () {
-    if (navigator.getUserMedia) {
-        return navigator.getUserMedia.bind(navigator)
-    }
-    if (navigator.webkitGetUserMedia) {
-        return navigator.webkitGetUserMedia.bind(navigator)
-    }
-    if (navigator.mozGetUserMedia) {
-        return navigator.mozGetUserMedia.bind(navigator)
-    }
-})();
-
 class MediaController {
     video: HTMLVideoElement
 
@@ -29,13 +17,18 @@ class MediaController {
     setupMedia() {
         const success = (stream: any) => {
             this.video.srcObject = stream
-            this.video.autoplay = true
+            this.video.play();
         }
 
         const error = (err: Error) => {
             console.log('Failed to get local stream', err)
         }
-        getUserMedia({ video: true, audio: false }, success, error);
+
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { exact: "environment" }
+            }, audio: false
+        }).then(success)
     }
 }
 
@@ -59,7 +52,9 @@ class AudioController {
         const error = (err: Error) => {
             console.log('Failed to get local stream', err)
         }
-        getUserMedia({ video: false, audio: true }, success, error);
+        navigator.mediaDevices.getUserMedia({
+            video: false, audio: true
+        }).then(success)
     }
 
     getVolume(): number {
