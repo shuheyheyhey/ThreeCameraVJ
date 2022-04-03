@@ -18,7 +18,8 @@ build project
 3. `cd dist/`
 4. `python3 -m http.server 8888`  
 create local server
-5. open browser "localhost:8888"  
-6. window window on browser  
-Start to access camera when a window tapped
+5. open browser with "localhost:8888"  
+6. Tap a window on browser to start audio  
+Start to access mic when you tapped a window
 
+![output](./output.gif)
